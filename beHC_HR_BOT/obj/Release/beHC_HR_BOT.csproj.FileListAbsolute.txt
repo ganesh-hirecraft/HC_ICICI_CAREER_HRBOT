@@ -1,0 +1,8 @@
+C:\ICICI Projects\HC_ICICI_CAREER_HRBOT\beHC_HR_BOT.dll.config
+C:\ICICI Projects\HC_ICICI_CAREER_HRBOT\beHC_HR_BOT.dll
+C:\ICICI Projects\HC_ICICI_CAREER_HRBOT\beHC_HR_BOT.pdb
+D:\Ganesh Bhat\All HC Projects\HC_ICICI_CAREER_HRBOT\beHC_HR_BOT\obj\Release\beHC_HR_BOT.csproj.AssemblyReference.cache
+D:\Ganesh Bhat\All HC Projects\HC_ICICI_CAREER_HRBOT\beHC_HR_BOT\obj\Release\beHC_HR_BOT.csproj.CoreCompileInputs.cache
+D:\Ganesh Bhat\All HC Projects\HC_ICICI_CAREER_HRBOT\beHC_HR_BOT\obj\Release\beHC_HR_BOT.csproj.CopyComplete
+D:\Ganesh Bhat\All HC Projects\HC_ICICI_CAREER_HRBOT\beHC_HR_BOT\obj\Release\beHC_HR_BOT.dll
+D:\Ganesh Bhat\All HC Projects\HC_ICICI_CAREER_HRBOT\beHC_HR_BOT\obj\Release\beHC_HR_BOT.pdb
