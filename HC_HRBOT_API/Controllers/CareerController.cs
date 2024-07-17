@@ -399,5 +399,98 @@ namespace HC_HRBOT_API.Controllers
             }
         }
         #endregion
+
+        #region [ Education Details ]
+        /// <summary>
+        /// Get Education Data
+        /// </summary>
+        /// <param name="requestPayload"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("AcademicDetails")]
+        public HttpResponseMessage GetAcademicDetails([FromBody] APIPayload requestPayload)
+        {
+            responsePayload = new APIPayload();
+            try
+            {
+                objCommon = HCClaims.opGetClaimValues(Request);
+                careerCls = new CareerClass(objCommon);
+                response = new apiResponse();
+                bool isValidToken = HCClaims.opValidateAccessToken(Request, objCommon);
+
+                if (!isValidToken)
+                {
+                    response = Common.UnauthorizedResponse(response, "Authorization has been denied for this request.");
+                    responsePayload.Data = ClsCrypto.EncryptUsingAES(JsonConvert.SerializeObject(response));
+                    return Request.CreateResponse(HttpStatusCode.OK, responsePayload);
+                }
+                else
+                {
+                    string decRequestPayload = ClsCrypto.DecryptUsingAES(requestPayload.Data);
+                    inputParams obj = JsonConvert.DeserializeObject<inputParams>(decRequestPayload);
+                    var CandidateNo = obj.CandidateNo;
+
+                    var objCanAcademic = careerCls.beGetAcademicDetails(CandidateNo);
+                    responsePayload.Data = ClsCrypto.EncryptUsingAES(JsonConvert.SerializeObject(objCanAcademic));
+                    return Request.CreateResponse(HttpStatusCode.OK, responsePayload);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.Logs("SaveCandidateAcademicInfo() : " + ex.ToString());
+                response = Common.SomethingWentWrongResponse(response, "Something went wrong.");
+                responsePayload.Data = ClsCrypto.EncryptUsingAES(JsonConvert.SerializeObject(response));
+                return Request.CreateResponse(HttpStatusCode.OK, responsePayload);
+            }
+        }
+
+        #endregion
+
+        #region [ Experience Details ]
+        /// <summary>
+        /// Get Experience Details
+        /// </summary>
+        /// <param name="requestPayload"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("EmploymentDetails")]
+        public HttpResponseMessage GetEmploymentDetails([FromBody] APIPayload requestPayload)
+        {
+            responsePayload = new APIPayload();
+            try
+            {
+                objCommon = HCClaims.opGetClaimValues(Request);
+                careerCls = new CareerClass(objCommon);
+                response = new apiResponse();
+                bool isValidToken = HCClaims.opValidateAccessToken(Request, objCommon);
+
+                if (!isValidToken)
+                {
+                    response = Common.UnauthorizedResponse(response, "Authorization has been denied for this request.");
+                    responsePayload.Data = ClsCrypto.EncryptUsingAES(JsonConvert.SerializeObject(response));
+                    return Request.CreateResponse(HttpStatusCode.OK, responsePayload);
+                }
+                else
+                {
+                    string decRequestPayload = ClsCrypto.DecryptUsingAES(requestPayload.Data);
+                    inputParams obj = JsonConvert.DeserializeObject<inputParams>(decRequestPayload);
+
+                    string CandidateNo = obj.CandidateNo;
+                    var objemp = careerCls.beGetEmploymentDetails(CandidateNo);
+
+                    responsePayload.Data = ClsCrypto.EncryptUsingAES(JsonConvert.SerializeObject(objemp));
+                    return Request.CreateResponse(HttpStatusCode.OK, responsePayload);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.Logs("GetEmploymentDetails() : " + ex.ToString());
+                response = Common.SomethingWentWrongResponse(response, "Something went wrong.");
+                responsePayload.Data = ClsCrypto.EncryptUsingAES(JsonConvert.SerializeObject(response));
+                return Request.CreateResponse(HttpStatusCode.OK, responsePayload);
+            }
+        }
+
+        #endregion
     }
 }

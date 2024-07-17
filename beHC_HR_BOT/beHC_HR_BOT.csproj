@@ -107,12 +107,14 @@
     <Compile Include="CareerClass.cs" />
     <Compile Include="CareerModel.cs" />
     <Compile Include="ClsCrypto.cs" />
+    <Compile Include="clsIPAL.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Cryptographer.cs" />
     <Compile Include="DocumentClass.cs" />
     <Compile Include="DocumentModel.cs" />
     <Compile Include="FileCompress.cs" />
     <Compile Include="General.cs" />
+    <Compile Include="ImpIPAL.cs" />
     <Compile Include="LoginCheck.cs" />
     <Compile Include="LoginCheckModel.cs" />
     <Compile Include="MasterClass.cs" />

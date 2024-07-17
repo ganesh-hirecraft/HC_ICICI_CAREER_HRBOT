@@ -233,4 +233,63 @@ namespace beHC_HR_BOT
 
     }
     #endregion
+
+
+    #region [ Experience Details ]
+
+    public class EmploymentResponse
+    {
+        public string ExpectedCTC { get; set; }
+        public int ExpectedCurrency { get; set; }
+        public string CurrentCTC { get; set; }
+        public int CurrentCurrency { get; set; }
+        public int MonthOfExp { get; set; }
+        public int YearOfExp { get; set; }
+        public bool IsFresher { get; set; }
+        public bool IsCurrentEmpStatus { get; set; }
+        public List<EmploymentDetails> tEmploymentDetails { get; set; }
+    }
+
+    public class EmploymentDetails
+    {
+        public long EmployeeRID { get; set; }
+        public string EmploymentStatus { get; set; }
+        public string EmploymentType { get; set; }
+        public string EmployeeCode { get; set; }
+        public string Organization { get; set; }
+        public string Designation { get; set; }
+        public string Industry { get; set; }
+        public Int64 IndustryID { get; set; }
+        public string Department { get; set; }
+        public string Currency { get; set; }
+        public string CTCPerMonth { get; set; }
+        public string ReasonforLeaving { get; set; }
+        public string EmploymetAddress { get; set; }
+        // public Int64 DesignationID { get; set; }
+        public Int64 EmploymentTypeID { get; set; }
+        public Int64 CurrencyID { get; set; }
+        public Int64 CountryID { get; set; }
+        public string Country { get; set; }
+        public int NoOfCompany { get; set; }
+        public List<CompaniesRoleInfoDetail> CompaniesRoleInfoDetail { get; set; }
+        public Int64 MainIndustryID { get; set; }
+        public string MainIndustry { get; set; }
+        public Int64 BFSIBankID { get; set; }
+        public string BFSIBank { get; set; }
+        public Int32 IsCampus { get; set; }
+        public decimal CampusExp { get; set; }
+        public Int32 IsInternship { get; set; }
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+    }
+
+    public class CompaniesRoleInfoDetail
+    {
+        public Int64 DesignationID { get; set; }
+        public string Designation { get; set; }
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public Int32 isCurrentEmp { get; set; }
+    }
+    #endregion
 }

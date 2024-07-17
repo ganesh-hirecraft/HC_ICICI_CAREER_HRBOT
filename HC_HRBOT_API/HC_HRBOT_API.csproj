@@ -207,6 +207,7 @@
     <Compile Include="Controllers\CareerController.cs" />
     <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IPALController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">

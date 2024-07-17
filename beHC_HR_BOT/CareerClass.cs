@@ -1096,5 +1096,154 @@ namespace beHC_HR_BOT
         }
 
         #endregion
+
+        #region[ Education CRUD ]
+        public apiResponse beGetAcademicDetails(string CandidateNo)
+        {
+            apiResponse response = new apiResponse();
+            DataSet objDs = new DataSet();
+            DataTable objdt = new DataTable();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(Common.Connection.ConStr))
+                {
+                    using (SqlCommand cmd = con.CreateCommand())
+                    {
+                        cmd.CommandText = "usp_GetResumeEducationDetails_career";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@CandidateNo", CandidateNo);
+                        cmd.Parameters.AddWithValue("@ResID", hcCommon.ResID);
+
+                        SqlDataAdapter objda = new SqlDataAdapter(cmd);
+                        objda.Fill(objdt);
+
+                        if (objdt == null)
+                            response = (Common.NotFoundResponse(res));
+                        else if (objdt.Rows.Count == 0)
+                            return response = (Common.NotFoundResponse(res));
+                        else
+                        {
+                            var getCanStatus = Common.DataTableToJSONObject(objdt);
+                            response = (Common.SuccessResponse(res, getCanStatus, objdt.Rows.Count));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.ErrorRes(res, ex);
+                response = Common.SomethingWentWrongResponse(response, "Something went wrong.");
+            }
+            return response;
+        }
+
+        #endregion
+
+        #region [Expereince Details] 
+
+        public apiResponse beGetEmploymentDetails(string CandidateNo)
+        {
+            DataSet objDataSet = new DataSet();
+            apiResponse Response = new apiResponse();
+            try
+            {
+                using (SqlConnection objcon = new SqlConnection(Common.Connection.ConStr))
+                {
+                    using (SqlCommand oCmd = objcon.CreateCommand())
+                    {
+                        oCmd.CommandText = "usp_getResumeEmployeeData_Career";
+                        oCmd.CommandType = CommandType.StoredProcedure;
+                        oCmd.Parameters.AddWithValue("@PramCandidateNo", CandidateNo);
+                        oCmd.Parameters.AddWithValue("@ResID", hcCommon.ResID);
+                        SqlDataAdapter objda = new SqlDataAdapter(oCmd);
+                        objda.Fill(objDataSet);
+                    }
+                }
+
+                EmploymentResponse EmploymentResponse = new EmploymentResponse();
+                List<EmploymentDetails> EmploymentDetails = new List<EmploymentDetails>();
+                List<CompaniesRoleInfoDetail> CompaniesRoleInfoDetail = new List<CompaniesRoleInfoDetail>();
+                if (objDataSet == null)
+                    Response = (Common.NotFoundResponse(res));
+                //else if (objDataSet.Tables[1].Rows.Count == 0 && objDataSet.Tables[2].Rows.Count == 0)
+                //    Response = (Common.NotFoundResponse(res));
+                else
+                {
+                    if (objDataSet.Tables[0].Rows[0]["TotalExP"] != null && Convert.ToString(objDataSet.Tables[0].Rows[0]["TotalExP"]) != "")
+                    {
+                        string[] totalexp = (objDataSet.Tables[0].Rows[0]["TotalExP"].ToString()).Split('.');
+                        EmploymentResponse.MonthOfExp = Common.bInt32(totalexp[1]);
+                        EmploymentResponse.YearOfExp = Common.bInt32(totalexp[0]);
+                    }
+                    else
+                    {
+                        EmploymentResponse.MonthOfExp = Common.bInt32(0);
+                        EmploymentResponse.YearOfExp = Common.bInt32(0);
+                    }
+                    EmploymentResponse.ExpectedCTC = objDataSet.Tables[0].Rows[0]["ExpectedCTC"].ToString();
+                    EmploymentResponse.ExpectedCurrency = Common.bInt32(objDataSet.Tables[0].Rows[0]["ExpectedCurrency"].ToString());
+                    EmploymentResponse.CurrentCTC = objDataSet.Tables[0].Rows[0]["PresentCTC"].ToString();
+                    EmploymentResponse.CurrentCurrency = Common.bInt32(objDataSet.Tables[0].Rows[0]["PresentCurrency"].ToString());
+                    EmploymentResponse.IsFresher = Convert.ToBoolean(objDataSet.Tables[0].Rows[0]["IsFresher"].ToString());
+                    EmploymentResponse.IsCurrentEmpStatus = Convert.ToBoolean(objDataSet.Tables[0].Rows[0]["IsCurrentEmpStatus"].ToString());
+
+                    EmploymentDetails = (from DataRow dr in objDataSet.Tables[1].Rows
+                                         select new EmploymentDetails()
+                                         {
+                                             EmployeeRID = Common.bInt64(dr["EmployeeRID"]),
+                                             EmploymentStatus = Common.bStr(dr["EmploymentStatus"]),
+                                             EmploymentType = Common.bStr(dr["EmploymentType"]),
+                                             EmployeeCode = Common.bStr(dr["EmployeeCode"]),
+                                             Organization = Common.bStr(dr["Organization"]),
+                                             Designation = Common.bStr(dr["Designation"]),
+                                             Industry = Common.bStr(dr["Industry"]),
+                                             Department = Common.bStr(dr["Department"]),
+                                             Currency = Common.bStr(dr["Currency"]),
+                                             CTCPerMonth = Common.bStr(dr["CTCPerMonth"]),
+                                             ReasonforLeaving = Common.bStr(dr["ReasonforLeaving"]),
+                                             EmploymetAddress = Common.bStr(dr["EmploymetAddress"]),
+                                             CurrencyID = Common.bInt64(dr["CurrencyID"]),
+                                             EmploymentTypeID = Common.bInt64(dr["EmploymentTypeID"]),
+                                             CountryID = Common.bInt64(dr["CountryID"]),
+                                             Country = Common.bStr(dr["Country"]),
+                                             IndustryID = Common.bInt64(dr["IndustryID"]),
+                                             MainIndustryID = Convert.ToInt64(dr["MainIndustryID"]),
+                                             MainIndustry = Convert.ToString(dr["MainIndustry"]),
+                                             BFSIBankID = Convert.ToInt64(dr["BFSIBankID"]),
+                                             BFSIBank = Convert.ToString(dr["BFSIBank"]),
+                                             IsCampus = Convert.ToInt32(dr["IsCampus"]),
+                                             CampusExp = Convert.ToDecimal(dr["CampusExp"]),
+                                             IsInternship = Convert.ToInt32(dr["IsInternship"]),
+                                             FromDate = Convert.ToString(dr["FromDate"]),
+                                             ToDate = Convert.ToString(dr["ToDate"]),
+                                             CompaniesRoleInfoDetail = (from DataRow r in objDataSet.Tables[2].Rows
+                                                                        where Convert.ToInt64(r["ResEmpid"]) == Convert.ToInt64(dr["RID"])
+                                                                        select new CompaniesRoleInfoDetail
+                                                                        {
+                                                                            DesignationID = Common.bInt64(r["DesignationId"]),
+                                                                            Designation = Convert.ToString(r["Designation"]),
+                                                                            FromDate = Convert.ToString(r["FromDate"]),
+                                                                            ToDate = Convert.ToString(r["ToDate"]),
+                                                                            isCurrentEmp = Convert.ToInt32(r["isCurrentEmp"])
+                                                                        }).ToList()
+                                         }).ToList();
+
+                    EmploymentResponse.tEmploymentDetails = EmploymentDetails;
+                    Response = (Common.SuccessResponse(res, EmploymentResponse, objDataSet.Tables[0].Rows.Count));
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.ErrorRes(res, ex);
+                Response = Common.SomethingWentWrongResponse(Response, "Something went wrong.");
+            }
+            finally
+            {
+
+            }
+            return Response;
+        }
+
+        #endregion
     }
 }
