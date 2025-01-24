@@ -52,7 +52,7 @@ namespace HC_HRBOT_API
         /// </summary>
         protected void Application_PreSendRequestHeaders()
         {
-            Response.Headers.Set("Server", "My httpd server");
+           // Response.Headers.Set("Server", "My httpd server");
             Response.Headers.Set("X-SourceFiles", "My Scource Files");
             Response.Headers.Set("Cache-Control", "no-cache");
             Response.Headers.Set("Pragma", "no-cache");
@@ -60,7 +60,7 @@ namespace HC_HRBOT_API
             Response.Headers.Set("X-Frame-Options", "SAMEORIGIN");
             Response.Headers.Set("X-Content-Type-Options", "nosniff");
             Response.Headers.Set("X-XSS-Protection", "1; mode=block");
-            Response.Headers.Set("Strict-Transport-Security", "max-age=300");
+            //Response.Headers.Set("Strict-Transport-Security", "max-age=300");
             Response.Headers.Set("X-Powered-By", "NA");
             Response.Headers.Set("Allow", "NA");
             Response.Headers.Set("X-Custom-Name", "NA");
@@ -69,7 +69,7 @@ namespace HC_HRBOT_API
             Response.Headers.Remove("X-Powered-By");
             Response.Headers.Remove("ETag");
             Response.Headers.Set("Access-Control-Allow-Origin", "*");
-            Response.Headers.Set("Origin", "*");
+            //Response.Headers.Set("Origin", "*");
 
         }
     }
